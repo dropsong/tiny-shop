@@ -47,8 +47,14 @@ INSTALLED_APPS = [
     'user_operation',
     'users',
     'DjangoUeditor',
+    # 'tinymce', 
     'social_core',
-    # 'xadmin',
+    'crispy_forms',
+    'reversion',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -135,8 +141,17 @@ USE_TZ = False  # 关闭时区自动检测
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# TINYMCE_DEFAULT_CONFIG = {
+#     'theme': 'silver',
+#     'width': 600,
+#     'height': 400,
+# }
