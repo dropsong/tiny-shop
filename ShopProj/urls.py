@@ -19,11 +19,18 @@ from django.urls import include, path, re_path
 
 from ShopProj.settings import MEDIA_ROOT
 from django.views.static import serve
+from goods.views import CategoryViewset, GoodsListViewSet
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'goods', GoodsListViewSet)
+router.register(r'categorys', CategoryViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('tinymce/',include('tinymce.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     # 支持静态资源文件的加载
     # 例如用户上传的资源，我们只要解决上传的功能就行，将资源放到对应目录下
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
+    path('', include(router.urls)),
 ]

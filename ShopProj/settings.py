@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'user_operation',
     'users',
     'DjangoUeditor',
-    # 'tinymce', 
     'social_core',
     'crispy_forms',
     'reversion',
@@ -150,8 +149,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# TINYMCE_DEFAULT_CONFIG = {
-#     'theme': 'silver',
-#     'width': 600,
-#     'height': 400,
-# }
+REST_FRAMEWORK ={
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    # 'DEFAULT_FILTER_BACKENDS': [
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    # ],
+}
