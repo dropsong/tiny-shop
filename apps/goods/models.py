@@ -69,8 +69,8 @@ class Goods(models.Model):
                               filePath="goods/files/", default='')
     ship_free = models.BooleanField(default=True, verbose_name="是否承担运费")
     goods_front_image = models.ImageField(upload_to="goods/images/", null=True, blank=True, verbose_name="封面图")
-    is_new = models.BooleanField(default=False, verbose_name="是否新品")#新品会呈现在主页中间
-    is_hot = models.BooleanField(default=False, verbose_name="是否热销")#热销品会呈现右侧
+    is_new = models.BooleanField(default=False, verbose_name="是否新品") # 新品会呈现在主页中间
+    is_hot = models.BooleanField(default=False, verbose_name="是否热销") # 热销品会呈现右侧
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
