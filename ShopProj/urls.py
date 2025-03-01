@@ -22,7 +22,8 @@ from django.views.static import serve
 from goods.views import CategoryViewset, GoodsListViewSet
 from rest_framework.routers import DefaultRouter
 
-from rest_framework.authtoken import views # 用于理解 token
+# from rest_framework.authtoken import views # 用于理解 token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet)
@@ -30,10 +31,17 @@ router.register(r'categorys', CategoryViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     # path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
     # 支持静态资源文件的加载
     # 例如用户上传的资源，我们只要解决上传的功能就行，将资源放到对应目录下
+
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-    re_path(r'^api-token-auth/', views.obtain_auth_token), # 用于理解 token
+
+    # re_path(r'^api-token-auth/', views.obtain_auth_token), # 用于理解 token
+
+    path('jwt-auth/', TokenObtainPairView.as_view()), # 理解 jwt
+    # path('jwt-refresh/', TokenRefreshView.as_view()),
+
     path('', include(router.urls)),
 ]
