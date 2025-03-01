@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'reversion',
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework.authtoken',  # token 登录需要使用这个
     'django_filters',
     'corsheaders', # 支持跨域
 ]

@@ -12,6 +12,8 @@ class GoodsPagination(PageNumberPagination):
     page_query_param = "p"
 
 
+from rest_framework.authentication import TokenAuthentication
+
 class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     商品列表页，分页，搜索，过滤，排序
@@ -19,6 +21,7 @@ class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
+    authentication_classes = (TokenAuthentication,)  # 使用 Token 认证
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['name', 'shop_price']
