@@ -41,7 +41,9 @@ urlpatterns = [
     # re_path(r'^api-token-auth/', views.obtain_auth_token), # 用于理解 token
 
     path('jwt-auth/', TokenObtainPairView.as_view()), # 理解 jwt
-    # path('jwt-refresh/', TokenRefreshView.as_view()),
+    path('jwt-refresh/', TokenRefreshView.as_view()),
+
+    path('login/', TokenObtainPairView.as_view()),
 
     path('', include(router.urls)),
 ]

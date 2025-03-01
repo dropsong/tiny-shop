@@ -21,7 +21,7 @@ class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
-    authentication_classes = (TokenAuthentication,)  # 使用 Token 认证
+    # authentication_classes = (TokenAuthentication,)  # 使用 Token 认证
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['name', 'shop_price']
