@@ -23,7 +23,7 @@ from goods.views import CategoryViewset, GoodsListViewSet
 from rest_framework.routers import DefaultRouter
 
 # from rest_framework.authtoken import views # 用于理解 token
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainSlidingView
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet)
@@ -40,10 +40,10 @@ urlpatterns = [
 
     # re_path(r'^api-token-auth/', views.obtain_auth_token), # 用于理解 token
 
-    path('jwt-auth/', TokenObtainPairView.as_view()), # 理解 jwt
-    path('jwt-refresh/', TokenRefreshView.as_view()),
+    # path('jwt-auth/', TokenObtainPairView.as_view()), # 理解 jwt
+    # path('jwt-refresh/', TokenRefreshView.as_view()), # 这两行仅演示，实际项目不会用到
 
-    path('login/', TokenObtainPairView.as_view()),
+    path('login/', TokenObtainSlidingView.as_view()),
 
     path('', include(router.urls)),
 ]
