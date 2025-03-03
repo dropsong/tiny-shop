@@ -23,7 +23,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# 这是一个无关紧要的练习项目，因此我选择不删除它
 SECRET_KEY = 'django-insecure-tibk6!eepdmipfd5t=u2a$)%^ndo$4s6mbho_i005n#rnqeqz-'
+# 这也是 JWT 的密钥
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

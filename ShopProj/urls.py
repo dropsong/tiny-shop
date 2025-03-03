@@ -24,12 +24,13 @@ from rest_framework.routers import DefaultRouter
 
 # from rest_framework.authtoken import views # 用于理解 token
 from rest_framework_simplejwt.views import TokenObtainSlidingView
-from users.views import UserViewset
+from users.views import SmsCodeViewset, UserViewset
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet)
 router.register(r'categorys', CategoryViewset)
 router.register(r'users', UserViewset, basename="users") # 注册验证
+router.register(r'codes', SmsCodeViewset, basename="codes")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

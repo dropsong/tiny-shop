@@ -3,8 +3,36 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
 from users.models import VerifyCode
+from ShopProj.settings import REGEX_MOBILE
+import re
 
 User = get_user_model()
+
+
+class SmsSerializer(serializers.Serializer):
+    mobile = serializers.CharField(max_length=11)
+
+    def validate_mobile(self, mobile):
+        """
+        验证手机号码
+        :param data:
+        :return:
+        """
+        # 手机是否注册
+        if User.objects.filter(mobile=mobile).count():
+            raise serializers.ValidationError("用户已经存在")
+
+        # 验证手机号码是否合法
+        if not re.match(REGEX_MOBILE, mobile):
+            raise serializers.ValidationError("手机号码非法")
+
+        # 验证码发送频率
+        one_mintes_ago = datetime.now() - timedelta(hours=0, minutes=1, seconds=0)
+        if VerifyCode.objects.filter(add_time__gt=one_mintes_ago, mobile=mobile).count():
+            raise serializers.ValidationError("距离上一次发送未超过 60s")
+
+        #验证通过，返回手机号
+        return mobile
 
 
 class UserRegSerializer(serializers.ModelSerializer):
@@ -16,7 +44,7 @@ class UserRegSerializer(serializers.ModelSerializer):
                                  max_length=4, min_length=4, label="验证码",
                                  error_messages={
                                      "blank": "请输入验证码",
-                                     "required": "请输入验证码",
+                                     "required": "请输入验证码",  # 代表 json 中没有 code 字段
                                      "max_length": "验证码不能超过4位",
                                      "min_length": "验证码不能低于4位"
                                  },
@@ -37,7 +65,7 @@ class UserRegSerializer(serializers.ModelSerializer):
         return user
 
     def validate_code(self, code):
-        # 不用get是因为写起来比较麻烦，而且时间判断也麻烦
+        # 不用 get 是因为写起来比较麻烦，而且时间判断也麻烦
         #  try:
         #      verify_records = VerifyCode.objects.get(mobile=self.initial_data["username"], code=code)
         #  except VerifyCode.DoesNotExist as e:
