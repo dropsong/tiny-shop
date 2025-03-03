@@ -174,7 +174,7 @@ AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
 )
 
-# 手机号码正则表达式
+# 手机号码正则表达式，这个正则并不会匹配所有手机号，而是作了限制
 REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
 # 云片网（发送短信验证码）设置
 APIKEY = "你知道的太多了"

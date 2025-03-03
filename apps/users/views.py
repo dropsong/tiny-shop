@@ -1,6 +1,8 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from rest_framework.mixins import CreateModelMixin
+from rest_framework import viewsets
 
 User = get_user_model()   # 获取用户模型
 
@@ -16,3 +18,11 @@ class CustomBackend(ModelBackend):  # 继承 ModelBackend 类
                 return user
         except Exception as e:
             return None
+
+
+from .serializers import UserRegSerializer
+class UserViewset(CreateModelMixin,viewsets.GenericViewSet):
+    """
+    用户
+    """
+    serializer_class = UserRegSerializer
