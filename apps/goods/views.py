@@ -1,3 +1,4 @@
+from goods.filters import GoodsFilter
 from goods.models import Goods, GoodsCategory
 from goods.serializers import CategorySerializer, GoodsSerializer
 from rest_framework import viewsets, filters
@@ -12,7 +13,7 @@ class GoodsPagination(PageNumberPagination):
     page_query_param = "p"
 
 
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 
 class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
     '''
@@ -24,14 +25,11 @@ class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
     # authentication_classes = (TokenAuthentication,)  # 使用 Token 认证
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['name', 'shop_price']
+
+    # filterset_fields = ['name', 'shop_price']
+    filterset_class = GoodsFilter # 写完这句需要到 settings 中配置
     search_fields = ['name', 'goods_brief', 'goods_desc']
     ordering_fields = ['sold_num', 'shop_price']
-
-    # filter_class = GoodsFilter # 写完这句需要到 settings 中配置 # 无用
-
-    # def get_queryset(self):
-    #     return Goods.objects.filter(shop_price__gt=100)
 
     # http://127.0.0.1:8000/goods/?price_min=100
     def get_queryset(self) :
