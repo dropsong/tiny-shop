@@ -24,21 +24,26 @@ from rest_framework.routers import DefaultRouter
 
 # from rest_framework.authtoken import views # 用于理解 token
 from rest_framework_simplejwt.views import TokenObtainSlidingView
+from user_operation.views import LeavingMessageViewset, UserFavViewset
 from users.views import SmsCodeViewset, UserViewset
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet)
 router.register(r'categorys', CategoryViewset)
 router.register(r'users', UserViewset, basename="users") # 注册验证
-router.register(r'codes', SmsCodeViewset, basename="codes")
+router.register(r'codes', SmsCodeViewset, basename="codes") # 发送验证码按钮
+router.register(r'userfavs', UserFavViewset, basename="userfavs")
+router.register(r'messages', LeavingMessageViewset, basename="messages")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
+    path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
+
     # 支持静态资源文件的加载
     # 例如用户上传的资源，我们只要解决上传的功能就行，将资源放到对应目录下
-
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
     # re_path(r'^api-token-auth/', views.obtain_auth_token), # 用于理解 token
@@ -49,4 +54,8 @@ urlpatterns = [
     path('login/', TokenObtainSlidingView.as_view()),
 
     path('', include(router.urls)),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

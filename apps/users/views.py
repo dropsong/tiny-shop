@@ -1,12 +1,14 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework import viewsets
 from random import choice
 from ShopProj.settings import APIKEY
 from utils.yunpian import YunPian
 from .models import VerifyCode
+from .permissions import IsOwnerOrNone
+
 
 User = get_user_model()   # 获取用户模型
 
@@ -16,7 +18,7 @@ class CustomBackend(ModelBackend):  # 继承 ModelBackend 类
     自定义用户验证
     """
     # 重写 authenticate 方法，仿照原来的函数写就行，注意返回类型
-    def authenticate(self, request,username=None, password=None, **kwargs):
+    def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = User.objects.get(Q(username=username)|Q(mobile=username))
             if user.check_password(password):
@@ -25,16 +27,19 @@ class CustomBackend(ModelBackend):  # 继承 ModelBackend 类
             return None
 
 
-from .serializers import SmsSerializer, UserRegSerializer
+from .serializers import SmsSerializer, UserDetailSerializer, UserRegSerializer
 from rest_framework_simplejwt.tokens import SlidingToken
 from rest_framework.response import Response
 from rest_framework import status
 
-class UserViewset(CreateModelMixin,viewsets.GenericViewSet):
+class UserViewset(CreateModelMixin,
+                  RetrieveModelMixin, UpdateModelMixin,
+                  viewsets.GenericViewSet):
     """
     用户，GET 方法不允许
     """
-    serializer_class = UserRegSerializer
+    # serializer_class = UserRegSerializer
+    queryset = User.objects.all()
 
     def perform_create(self, serializer):
         return serializer.save()  # 其实这里就是比原来的方法多一个 return
@@ -52,6 +57,21 @@ class UserViewset(CreateModelMixin,viewsets.GenericViewSet):
         re_dict["name"] = user.name if user.name else user.username
         headers = self.get_success_headers(serializer.data)
         return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return UserRegSerializer
+        elif self.action == "retrieve":
+            return UserDetailSerializer
+        return UserDetailSerializer
+
+    # 查询和修改，都需要权限
+    def get_permissions(self):
+        if self.action == "retrieve":
+            return [IsOwnerOrNone()]
+        elif self.action == "create":
+            return []  # 新增，不需要权限
+        return [IsOwnerOrNone()]
 
 
 class SmsCodeViewset(CreateModelMixin, viewsets.GenericViewSet):

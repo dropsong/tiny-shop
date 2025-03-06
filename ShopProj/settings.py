@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # token 登录需要使用这个
     'django_filters',
     'corsheaders', # 支持跨域
+    'drf_spectacular', # 自动生成 API 文档
 ]
 
 MIDDLEWARE = [
@@ -95,8 +96,6 @@ WSGI_APPLICATION = 'ShopProj.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',             # 使用的数据库的名字,数据库必须手动创建
         'USER': 'root',             # 链接 mysql 的用户名
@@ -160,23 +159,25 @@ REST_FRAMEWORK ={
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CROS_ORIGIN_ALLOW_ALL = True  # 允许跨域
 
 import datetime
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=17),
 }
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = (  # 只要满足一个即可
     'users.views.CustomBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # 手机号码正则表达式，这个正则并不会匹配所有手机号，而是作了限制
 REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
 # 云片网（发送短信验证码）设置
-APIKEY = "750491da91aaa41e4cdecf722629117b"
+APIKEY = "你知道的太多了"

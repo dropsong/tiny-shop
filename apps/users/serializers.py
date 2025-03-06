@@ -96,3 +96,12 @@ class UserRegSerializer(serializers.ModelSerializer):
         model = User
         # 这里和前端对应，当然通过 validate 可以操作，这里写的字段我们直接访问链接时都会呈现
         fields = ("username", "code", "mobile", "password")
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    '''
+    用户详情序列化类
+    '''
+    class Meta:
+        model = User
+        fields = ("name", "gender", "birthday", "email", "mobile")
