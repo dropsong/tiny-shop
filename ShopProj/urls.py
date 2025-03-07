@@ -24,7 +24,8 @@ from rest_framework.routers import DefaultRouter
 
 # from rest_framework.authtoken import views # 用于理解 token
 from rest_framework_simplejwt.views import TokenObtainSlidingView
-from user_operation.views import LeavingMessageViewset, UserFavViewset
+from trade.views import OrderViewset, ShoppingCartViewset
+from user_operation.views import AddressViewset, LeavingMessageViewset, UserFavViewset
 from users.views import SmsCodeViewset, UserViewset
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
@@ -35,6 +36,9 @@ router.register(r'users', UserViewset, basename="users") # 注册验证
 router.register(r'codes', SmsCodeViewset, basename="codes") # 发送验证码按钮
 router.register(r'userfavs', UserFavViewset, basename="userfavs")
 router.register(r'messages', LeavingMessageViewset, basename="messages")
+router.register(r'address', AddressViewset, basename="address")
+router.register(r'shopcarts', ShoppingCartViewset, basename="shopcarts")
+router.register(r'orders', OrderViewset, basename="orders")
 
 
 urlpatterns = [

@@ -1,13 +1,11 @@
 from datetime import datetime
-
 from django.db import models
 from django.contrib.auth import get_user_model
-
 from goods.models import Goods
 User = get_user_model()
-# Create your models here.
 # from users.models import UserProfile
-#User位置也可以改为UserProfile，这是我们使用的另外一种用法
+# User位置也可以改为UserProfile，这是我们使用的另外一种用法
+
 
 class ShoppingCart(models.Model):
     """
@@ -16,7 +14,6 @@ class ShoppingCart(models.Model):
     user = models.ForeignKey(User, verbose_name=u"用户",on_delete = models.CASCADE,)
     goods = models.ForeignKey(Goods, verbose_name=u"商品",on_delete = models.CASCADE,)
     nums = models.IntegerField(default=0, verbose_name="购买数量")
-
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
     class Meta:
@@ -61,6 +58,7 @@ class OrderInfo(models.Model):
 
     def __str__(self):
         return str(self.order_sn)
+
 
 class OrderGoods(models.Model):
     """

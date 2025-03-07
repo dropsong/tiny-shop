@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from ShopProj import settings
 from goods.models import Goods
 from users.models import UserProfile
+from utils.diyfunc import put_user
 from .models import UserFav
 from .models import UserLeavingMessage, UserAddress
 from goods.serializers import GoodsSerializer
@@ -19,20 +20,7 @@ class UserFavSerializer(serializers.ModelSerializer):
     )
 
     def validate(self, attrs):
-        request = self.context['request']
-        cookie_header = request.headers.get('Cookie', '')
-        match = re.search(r'name=([^;]+)', cookie_header)
-        if match:
-            name_value = match.group(1)
-            try:
-                user = UserProfile.objects.get(username=name_value)
-            except UserProfile.DoesNotExist:
-                raise serializers.ValidationError("用户不存在")
-            attrs['user'] = user
-        else:
-            raise serializers.ValidationError("Cookie 中未找到用户 name")
-        return attrs
-    
+        return put_user(self.context['request'], attrs)
 
     class Meta:
         model = UserFav
@@ -105,20 +93,23 @@ class LeavingMessageSerializer(serializers.ModelSerializer):
     add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
 
     def validate(self, attrs):
-        request = self.context['request']
-        cookie_header = request.headers.get('Cookie', '')
-        match = re.search(r'name=([^;]+)', cookie_header)
-        if match:
-            name_value = match.group(1)
-            try:
-                user = UserProfile.objects.get(username=name_value)
-            except UserProfile.DoesNotExist:
-                raise serializers.ValidationError("用户不存在")
-            attrs['user'] = user
-        else:
-            raise serializers.ValidationError("Cookie 中未找到用户 name")
-        return attrs
+        return put_user(self.context['request'], attrs)
 
     class Meta:
         model = UserLeavingMessage
         fields = ("user", "message_type", "subject", "message", "file", "id" ,"add_time")
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+    add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
+
+    def validate(self, attrs):
+        return put_user(self.context['request'], attrs)
+
+    class Meta:
+        model = UserAddress
+        fields = ("id", "user", "province", "city", "district", "address", "signer_name",
+                  "add_time", "signer_mobile")
