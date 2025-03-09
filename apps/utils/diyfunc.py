@@ -12,7 +12,7 @@ def SelfQuerySet(request: HttpRequest, model_class):
     uname = ''
     if match:
         uname = match.group(1)
-    uuser = UserProfile.objects.get(username=uname)
+    uuser = UserProfile.objects.get(username=uname) # 若失败应当抛出异常
     return model_class.objects.filter(user=uuser)
 
 

@@ -15,10 +15,8 @@ class ShoppingCartViewset(viewsets.ModelViewSet):
     删除购物记录
     """
     lookup_field = 'goods_id' # 为修改、删除提供的依据，默认是主键，现在改变了
-    # TODO   delete 方法需要权限控制
 
-    # get queryset 只是限制了查询的范围，不会限制删除，因此需要限制删除权限
-    def get_queryset(self):  
+    def get_queryset(self):  # 已在此处作了权限控制
         return SelfQuerySet(self.request, ShoppingCart)
 
     def get_serializer_class(self):
@@ -40,10 +38,10 @@ class OrderViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin,
     create：
     新增订单
     """
-    permission_classes = (IsOwnerOrReadOnly,)
+    # permission_classes = (IsOwnerOrReadOnly,)
     serializer_class = OrderSerializer
 
-    def get_queryset(self):
+    def get_queryset(self): # 已在此处作了权限控制
         return SelfQuerySet(self.request, OrderInfo)
 
     # perform_create 用于对实例进行修改
