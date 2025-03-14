@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from goods.serializers import GoodsSerializer
 from goods.models import Goods
-from users.models import UserProfile
+from utils.alipay_tools import AliPay
 from utils.diyfunc import put_user
-from .models import OrderInfo, ShoppingCart
+from .models import OrderGoods, OrderInfo, ShoppingCart
+from ShopProj.settings import AZURE_SERVER_IP, ali_pub_key_path, private_key_path
 import time
 
 
@@ -55,6 +56,46 @@ class ShopCartSerializer(serializers.Serializer) :
         return instance
 
 
+#用来显示订单详情中的商品详情
+class OrderGoodsSerialzier(serializers.ModelSerializer):
+    goods = GoodsSerializer(many=False)#一个商品id只会对应一件商品
+    class Meta:
+        model = OrderGoods
+        fields = "__all__"
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    goods = OrderGoodsSerialzier(many=True)#一个订单id可以有多个商品
+    #SerializerMethodField自定义的serializer，无需用户提交
+    alipay_url = serializers.SerializerMethodField(read_only=True)
+    # 这里的 alipay_url 和 get_alipay_url() 函数的名字是有严格对应关系的
+    def get_alipay_url(self, obj):
+        # alipay = AliPay(
+        #     appid="2016101400687743",
+        #     # app_notify_url="http://127.0.0.1:8000/alipay/return/",
+        #     app_notify_url="http://" + server_ip + "/alipay/return/",
+        #     app_private_key_path=private_key_path,
+        #     alipay_public_key_path=ali_pub_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        #     debug=True,  # 默认False,
+        #     return_url="http://" + server_ip + "/alipay/return/"
+        # )
+
+        # url = alipay.direct_pay(
+        #     subject=obj.order_sn,
+        #     out_trade_no=obj.order_sn,
+        #     total_amount=obj.order_mount,
+        # )
+        # re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+
+        # alipay 的沙箱环境有问题，这里跳过了
+        re_url = "https://booking.com"
+        return re_url
+
+    class Meta:
+        model = OrderInfo
+        fields = "__all__"
+
+
 class OrderSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
@@ -75,6 +116,30 @@ class OrderSerializer(serializers.ModelSerializer):
         put_user(self.context['request'], attrs)
         attrs["order_sn"] = self.generate_order_sn()
         return attrs
+
+    # # SerializerMethodField 自定义的 serializer，无需用户提交
+    # alipay_url = serializers.SerializerMethodField(read_only=True)
+
+    # def get_alipay_url(self, obj):
+    #     server_ip = AZURE_SERVER_IP
+    #     alipay = AliPay(
+    #         appid = "2016101400687743",
+    #         # app_notify_url="http://127.0.0.1:8000/alipay/return/",
+    #         app_notify_url = "http://" + server_ip + ":8000/alipay/return/",
+    #         app_private_key_path = private_key_path,
+    #         alipay_public_key_path = ali_pub_key_path, # 支付宝的公钥，验证支付宝回传消息使用
+    #         debug = True, # 默认 False,
+    #         return_url = "http://" + server_ip + "/alipay/return/"
+    #     )
+
+    #     url = alipay.direct_pay(
+    #         subject=obj.order_sn,
+    #         out_trade_no=obj.order_sn,
+    #         total_amount=obj.order_mount,
+    #     )
+    #     re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+
+    #     return re_url
 
     class Meta:
         model = OrderInfo

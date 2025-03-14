@@ -181,3 +181,13 @@ AUTHENTICATION_BACKENDS = (  # 只要满足一个即可
 REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
 # 云片网（发送短信验证码）设置
 APIKEY = "你知道的太多了"
+
+# 支付宝相关配置
+private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048')
+ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048')
+
+AZURE_SERVER_IP = "51.140.127.106"
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)

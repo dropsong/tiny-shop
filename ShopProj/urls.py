@@ -28,6 +28,8 @@ from trade.views import OrderViewset, ShoppingCartViewset
 from user_operation.views import AddressViewset, LeavingMessageViewset, UserFavViewset
 from users.views import SmsCodeViewset, UserViewset
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.views.generic import TemplateView
+# from trade.views import AliPayView
 
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet)
@@ -46,6 +48,8 @@ urlpatterns = [
 
     path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
 
+    re_path(r'^index/', TemplateView.as_view(template_name="index.html"), name="index"),
+
     # 支持静态资源文件的加载
     # 例如用户上传的资源，我们只要解决上传的功能就行，将资源放到对应目录下
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
@@ -62,4 +66,6 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    # re_path(r'^alipay/return/', AlipayView.as_view(), name="alipay"), # 支付宝支付成功后的回调
 ]
