@@ -191,3 +191,7 @@ AZURE_SERVER_IP = "51.140.127.106"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+TEMPLATE_DIRS = (
+    str(BASE_DIR) + '/templates/',
+)
