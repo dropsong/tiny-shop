@@ -186,7 +186,7 @@ APIKEY = "你知道的太多了"
 private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048')
 ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048')
 
-AZURE_SERVER_IP = "51.140.127.106"
+AZURE_SERVER_IP = "你知道的太多了"
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),

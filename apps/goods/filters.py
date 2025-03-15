@@ -10,4 +10,4 @@ class GoodsFilter(django_filters.FilterSet):
     class Meta:
         model = Goods
         # 前端可以请求 127.0.0.1:8000/goods/?is_hot=true 来获取热销商品
-        fields = ['min_price', 'max_price','name', 'is_hot']
+        fields = ['min_price', 'max_price','name', 'is_hot', 'is_new']

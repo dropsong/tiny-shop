@@ -19,7 +19,7 @@ from django.urls import include, path, re_path
 
 from ShopProj.settings import MEDIA_ROOT
 from django.views.static import serve
-from goods.views import CategoryViewset, GoodsListViewSet
+from goods.views import BannerViewset, CategoryViewset, GoodsListViewSet, IndexCategoryViewset
 from rest_framework.routers import DefaultRouter
 
 # from rest_framework.authtoken import views # 用于理解 token
@@ -41,6 +41,8 @@ router.register(r'messages', LeavingMessageViewset, basename="messages")
 router.register(r'address', AddressViewset, basename="address")
 router.register(r'shopcarts', ShoppingCartViewset, basename="shopcarts")
 router.register(r'orders', OrderViewset, basename="orders")
+router.register(r'banners', BannerViewset, basename="banners")
+router.register(r'indexgoods', IndexCategoryViewset, basename="indexgoods")
 
 
 urlpatterns = [
