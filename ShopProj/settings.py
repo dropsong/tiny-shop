@@ -75,7 +75,7 @@ ROOT_URLCONF = 'ShopProj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -190,8 +190,4 @@ AZURE_SERVER_IP = "51.140.127.106"
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-)
-
-TEMPLATE_DIRS = (
-    str(BASE_DIR) + '/templates/',
 )
