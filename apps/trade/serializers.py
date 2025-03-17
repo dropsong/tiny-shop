@@ -47,6 +47,10 @@ class ShopCartSerializer(serializers.Serializer) :
         else :
             existed = ShoppingCart.objects.create(**validated_data)
 
+        # 加入购物车几个就把商品库存减少几个
+        goods = existed.goods
+        goods.goods_num -= nums
+        goods.save()
         return existed
     
     def update(self, instance, validated_data):

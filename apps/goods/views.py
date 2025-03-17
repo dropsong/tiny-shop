@@ -5,6 +5,7 @@ from rest_framework import viewsets, filters
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
+from rest_framework.response import Response
 
 
 class GoodsPagination(PageNumberPagination):
@@ -14,8 +15,8 @@ class GoodsPagination(PageNumberPagination):
 
 
 # from rest_framework.authentication import TokenAuthentication
-
-class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
+class GoodsListViewSet(CacheResponseMixin, viewsets.ReadOnlyModelViewSet):
     '''
     商品列表页，分页，搜索，过滤，排序
     '''
@@ -38,6 +39,14 @@ class GoodsListViewSet(viewsets.ReadOnlyModelViewSet):
         if price_min:
             queryset=queryset.filter(shop_price__gt=int(price_min))
         return queryset
+
+    # 这个函数的写法是参照其要 override 的函数，然后修改
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_num += 1 # 对点击数加 1 并保存
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):

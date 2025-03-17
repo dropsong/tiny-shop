@@ -26,6 +26,23 @@ class ShoppingCartViewset(viewsets.ModelViewSet):
         else:
             return ShopCartSerializer
 
+    # 购物车数目删除几个，就加回去
+    def perform_destroy(self, instance):
+        goods = instance.goods
+        goods.goods_num += instance.nums
+        goods.save()
+        instance.delete()
+
+    # 修改了购物车数目
+    def perform_update(self, serializer):
+        existed_record = ShoppingCart.objects.get(id=serializer.instance.id)
+        existed_nums = existed_record.nums      # 变化之前的数量，在数据库中
+        saved_record = serializer.save()        # 变化后的数量，存入数据库
+        nums = saved_record.nums-existed_nums   # nums 可正可负
+        goods = saved_record.goods
+        goods.goods_num -= nums
+        goods.save() #把商品库存数目更新
+
 
 class OrderViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                    mixins.CreateModelMixin, mixins.DestroyModelMixin,

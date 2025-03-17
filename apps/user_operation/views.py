@@ -2,14 +2,10 @@ from django.db import IntegrityError
 from rest_framework import viewsets, status, mixins
 
 from user_operation.permissions import IsOwnerOrReadOnly
-from users.models import UserProfile
 from .models import UserAddress, UserFav, UserLeavingMessage
 from .serializers import AddressSerializer, LeavingMessageSerializer, UserFavDetailSerializer, UserFavSerializer, UserFavSerializer2
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from utils.diyfunc import SelfQuerySet
-import re
 
 
 class UserFavViewset(mixins.ListModelMixin, mixins.CreateModelMixin,
@@ -27,11 +23,24 @@ class UserFavViewset(mixins.ListModelMixin, mixins.CreateModelMixin,
     def get_queryset(self):
         return SelfQuerySet(self.request, UserFav)
 
+    def perform_create(self, serializer):
+        instance = serializer.save() # 得到 serializer
+        goods = instance.goods
+        goods.fav_num += 1           # 对收藏数加 1
+        goods.save()
+
     def create(self, request, *args, **kwargs):
         try:
             return super().create(request, *args, **kwargs)
         except IntegrityError:
             return Response({"detail": "已经收藏"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # 这个功能前端没做，不用测试了
+    def perform_destroy(self, instance):
+        goods = instance.goods
+        goods.fav_num -= 1
+        goods.save()
+        instance.delete()
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -65,3 +74,5 @@ class AddressViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):  
         return SelfQuerySet(self.request, UserAddress)
+
+
