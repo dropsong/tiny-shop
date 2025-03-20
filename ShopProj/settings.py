@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'users',
     'DjangoUeditor',
     'social_core',
+    'social_django',
     'crispy_forms',
     'reversion',
     'rest_framework',
