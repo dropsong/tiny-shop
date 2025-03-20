@@ -83,6 +83,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # 第三方登录
+                'social_django.context_processors.login_redirect',  # 第三方登录
             ],
         },
     },
@@ -175,6 +177,7 @@ JWT_AUTH = {
 AUTHENTICATION_BACKENDS = (  # 只要满足一个即可
     'users.views.CustomBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.weibo.WeiboOAuth2',
 )
 
 # 手机号码正则表达式，这个正则并不会匹配所有手机号，而是作了限制
@@ -205,3 +208,7 @@ CACHES = {
         }
     }
 }
+
+SOCIAL_AUTH_WEIBO_KEY = '4130988826'
+SOCIAL_AUTH_WEIBO_SECRET = '58982eecdbd586a3f1663f2bb89ea5dc'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
