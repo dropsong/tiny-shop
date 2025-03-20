@@ -1,3 +1,4 @@
 apps/trade/keys/private_2048.txt
 apps/trade/keys/alipay_key_2048.txt
 apps/trade/keys/pub_2048
+__pycache__/
