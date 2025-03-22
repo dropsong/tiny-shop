@@ -52,7 +52,7 @@ def trigger_error(request): # test
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sentry-debug/', trigger_error),
-    path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
+    # path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
 
     re_path(r'^index/', TemplateView.as_view(template_name="index.html"), name="index"),
 
