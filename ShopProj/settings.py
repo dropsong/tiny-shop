@@ -171,7 +171,7 @@ CROS_ORIGIN_ALLOW_ALL = True  # 允许跨域
 
 import datetime
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=17),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=37),
 }
 
 AUTHENTICATION_BACKENDS = (  # 只要满足一个即可
