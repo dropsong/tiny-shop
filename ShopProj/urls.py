@@ -45,9 +45,13 @@ router.register(r'banners', BannerViewset, basename="banners")
 router.register(r'indexgoods', IndexCategoryViewset, basename="indexgoods")
 
 
+def trigger_error(request): # test
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('sentry-debug/', trigger_error),
     path('api-auth/', include('rest_framework.urls')),  # 这个好像是 xadmin 用的，之后考虑删除
 
     re_path(r'^index/', TemplateView.as_view(template_name="index.html"), name="index"),

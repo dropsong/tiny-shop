@@ -121,7 +121,7 @@ def do_complete(backend, login, user=None, redirect_name="next", *args, **kwargs
     token = AccessToken.for_user(user)  # 生成 JWT 访问令牌
     response.set_cookie("name",user.name if user.name else user.username,max_age=24*3600)
     response.set_cookie("token", str(token), max_age=24*3600)
-    return backend.strategy.redirect(url)
+    return response
 
 
 def do_disconnect(

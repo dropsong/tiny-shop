@@ -99,7 +99,8 @@ class OAuthAuth(BaseAuth):
         value if valid."""
         if not self.STATE_PARAMETER and not self.REDIRECT_STATE:
             return None
-        state = self.get_session_state()
+        # state = self.get_session_state()
+        state = self.strategy.request_data().get("state")  # 改为从请求参数获取
         request_state = self.get_request_state()
         if not request_state:
             raise AuthMissingParameter(self, "state")
