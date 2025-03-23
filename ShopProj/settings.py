@@ -28,9 +28,9 @@ SECRET_KEY = 'django-insecure-tibk6!eepdmipfd5t=u2a$)%^ndo$4s6mbho_i005n#rnqeqz-
 # 这也是 JWT 的密钥
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # 用户相关使用这个模型类，createsuperuser 时使用自定义的用户模型
 AUTH_USER_MODEL = 'users.UserProfile' 
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',  # token 登录需要使用这个
     'django_filters',
-    'corsheaders', # 支持跨域
+    # 'corsheaders', # 支持跨域
     'drf_spectacular', # 自动生成 API 文档
 ]
 
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # 支持跨域
+    # 'corsheaders.middleware.CorsMiddleware', # 支持跨域
 ]
 
 ROOT_URLCONF = 'ShopProj.urls'
@@ -234,4 +234,4 @@ sentry_sdk.init(
 )
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
