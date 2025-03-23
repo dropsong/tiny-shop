@@ -101,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',             # 使用的数据库的名字,数据库必须手动创建
         'USER': 'root',             # 链接 mysql 的用户名
-        'PASSWORD': 'zhiyue123',          # 用户对应的密码
+        'PASSWORD': '',             # 用户对应的密码
         'HOST': 'localhost',        # 指定 mysql 数据库所在电脑 ip
         'PORT': 3306,               # mysql 服务的端口号
         'OPTIONS': {"init_command": "SET default_storage_engine=INNODB;"},
@@ -189,7 +189,7 @@ APIKEY = "你知道的太多了"
 private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048')
 ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048')
 
-AZURE_SERVER_IP = "51.140.127.106"
+AZURE_SERVER_IP = ""
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -209,10 +209,9 @@ CACHES = {
     }
 }
 
-SOCIAL_AUTH_WEIBO_KEY = '4130988826'
-SOCIAL_AUTH_WEIBO_SECRET = '58982eecdbd586a3f1663f2bb89ea5dc'
+SOCIAL_AUTH_WEIBO_KEY = ''
+SOCIAL_AUTH_WEIBO_SECRET = ''
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
-# SOCIAL_AUTH_WEIBO_REDIRECT_URI = 'http://51.140.127.106/complete/weibo/'
 
 
 # import sentry_sdk
@@ -227,7 +226,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
 import sentry_sdk
 
 sentry_sdk.init(
-    dsn="https://4c064444d49028456eb8ea9d35edb346@o4509014858268672.ingest.de.sentry.io/4509014863380560",
+    dsn="https://和谐",
     # Add data like request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
