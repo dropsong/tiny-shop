@@ -101,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',             # 使用的数据库的名字,数据库必须手动创建
         'USER': 'root',             # 链接 mysql 的用户名
-        'PASSWORD': 'zhiyue123',          # 用户对应的密码
+        'PASSWORD': '你知道的太多了', # 用户对应的密码
         'HOST': 'localhost',        # 指定 mysql 数据库所在电脑 ip
         'PORT': 3306,               # mysql 服务的端口号
         'OPTIONS': {"init_command": "SET default_storage_engine=INNODB;"},
@@ -212,7 +212,6 @@ CACHES = {
 SOCIAL_AUTH_WEIBO_KEY = '4130988826'
 SOCIAL_AUTH_WEIBO_SECRET = '58982eecdbd586a3f1663f2bb89ea5dc'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
-# SOCIAL_AUTH_WEIBO_REDIRECT_URI = 'http://51.140.127.106/complete/weibo/'
 
 
 # import sentry_sdk
@@ -222,7 +221,6 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
 #     dsn="",
 #     integrations=[DjangoIntegration()]
 # )
-
 
 import sentry_sdk
 
@@ -234,4 +232,4 @@ sentry_sdk.init(
 )
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
